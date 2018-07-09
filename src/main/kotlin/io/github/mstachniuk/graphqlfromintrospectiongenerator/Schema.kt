@@ -19,7 +19,8 @@ data class GraphQLType(val kind: String,
                        val fields: List<GraphQLField> = listOf(),
                        val enumValues: List<GraphQLEnumType> = listOf(),
                        val inputFields: List<GraphQLField> = listOf(),
-                       val interfaces: List<GraphQLFieldType> = listOf()) : Descriptable
+                       val interfaces: List<GraphQLFieldType> = listOf(),
+                       val possibleTypes: List<GraphQLFieldType> = listOf()) : Descriptable
 
 data class GraphQLField(val name: String,
                         override val description: String = "",

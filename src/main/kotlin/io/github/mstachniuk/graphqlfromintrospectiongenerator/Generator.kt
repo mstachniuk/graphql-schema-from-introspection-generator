@@ -28,23 +28,35 @@ class Generator {
                 it.kind == "ENUM" -> "enum"
                 it.kind == "INPUT_OBJECT" -> "input"
                 it.kind == "INTERFACE" -> "interface"
+                it.kind == "UNION" -> "union"
                 else -> "UNKNOWN_TYPE"
             }
 
             output += printDescription(it, false)
-            output += "$kind ${it.name}${printInterfaces(it.interfaces)} {\n"
-            it.fields.sortedBy { it.name }
-                    .forEach {
-                        output += printField(it)
-                    }
-            it.inputFields.sortedBy { it.name }
-                    .forEach {
-                        output += printField(it)
-                    }
-            output += printEnumTypes(it.enumValues)
-
-            output += "}\n\n"
+            output += "$kind ${it.name}${printInterfaces(it.interfaces)} "
+            output += printBody(it)
         }
+        return output
+    }
+
+    private fun printBody(type: GraphQLType): String {
+        if (type.kind == "UNION") {
+            return "= ${type.possibleTypes
+                    .map { it.name }
+                    .joinToString(" | ")}\n"
+        }
+        var output = "{\n"
+        type.fields.sortedBy { it.name }
+                .forEach {
+                    output += printField(it)
+                }
+        type.inputFields.sortedBy { it.name }
+                .forEach {
+                    output += printField(it)
+                }
+        output += printEnumTypes(type.enumValues)
+
+        output += "}\n\n"
         return output
     }
 
