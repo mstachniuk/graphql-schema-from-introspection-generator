@@ -10,43 +10,32 @@ class Generator {
         val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
 
         var output = printTypes(response)
-        output += printQueries(response)
-        output += printMutations(response)
 
         return output.trimIndent().trimIndent()
     }
 
-    private fun printTypes(response: IntrospectionResponse?): String {
-        val queryTypeName = response!!.data.schema.queryType!!.name
-        val mutationTypeName = response.data.schema.mutationType?.name
-        val subscriptionTypeName = response.data.schema.subscriptionType?.name
+    private fun printTypes(response: IntrospectionResponse): String {
 
         val types = response.data.schema.types!!
                 .filter { !it.name.startsWith("__") }
                 .filter { it.kind != "SCALAR" }
-                .filter { it.name != queryTypeName }
-                .filter { it.name != mutationTypeName }
-                .filter { it.name != subscriptionTypeName }
-
-//        types.forEach { println(it) }
-//        println()
 
         var output = ""
 
-        types.sortedBy { it.name }
-                .forEach {
+        types.sortedBy { it.name }.forEach {
             val kind = when {
                 it.kind == "OBJECT" -> "type"
                 it.kind == "ENUM" -> "enum"
                 it.kind == "INPUT_OBJECT" -> "input"
+                it.kind == "INTERFACE" -> "interface"
                 else -> "UNKNOWN_TYPE"
             }
 
+            output += printDescription(it, false)
             output += "$kind ${it.name} {\n"
             it.fields.sortedBy { it.name }
                     .forEach {
-                output += printDescription(it)
-                output += "$margin${it.name}: ${printType(it.type)}\n"
+                output += printField(it)
             }
             it.inputFields.sortedBy { it.name }
                     .forEach {
@@ -70,10 +59,13 @@ class Generator {
         }
     }
 
-    private fun printDescription(it: Descriptable): String {
+    private fun printDescription(it: Descriptable, addMargin: Boolean = true): String {
         var output = ""
         if (it.description.isNotBlank()) {
-            output += "$margin# ${it.description}\n"
+            if (addMargin) {
+                output += "$margin";
+            }
+            output += "# ${it.description}\n"
         }
         return output
     }
@@ -88,32 +80,8 @@ class Generator {
         return type.name
     }
 
-
-    private fun printQueries(response: IntrospectionResponse): String {
-        if (response!!.data.schema.queryType == null) {
-            return ""
-        }
-        val queryTypeName = response!!.data.schema.queryType!!.name
-
-        val queries = response!!.data.schema.types!!
-                .filter { it.name == queryTypeName }
-
-        var queriesText = printOperations(queries)
-        if (queriesText.isBlank()) {
-            return ""
-        }
-        return "type Query {\n$queriesText}\n\n"
-    }
-
-    private fun printOperations(queries: List<GraphQLType>): String {
-        var queriesText = ""
-        queries.forEach {
-            it.fields.forEach {
-                queriesText += printDescription(it)
-                queriesText += "$margin${it.name}${printArguments(it.args)}: ${printType(it.type)}\n"
-            }
-        }
-        return queriesText
+    private fun printField(field: GraphQLField) : String {
+         return "${printDescription(field)}$margin${field.name}${printArguments(field.args)}: ${printType(field.type)}\n"
     }
 
     private fun printArguments(args: List<GraphQLField>): String {
@@ -124,20 +92,5 @@ class Generator {
             return "($arguments)"
         }
         return ""
-    }
-
-    private fun printMutations(response: IntrospectionResponse): String {
-        if (response!!.data.schema.mutationType == null) {
-            return ""
-        }
-        val mutationTypeName = response!!.data.schema.mutationType!!.name
-        val mutations = response!!.data.schema.types!!
-                .filter { it.name == mutationTypeName }
-
-        var queriesText = printOperations(mutations)
-        if (queriesText.isBlank()) {
-            return ""
-        }
-        return "type Mutation {\n$queriesText}\n\n"
     }
 }

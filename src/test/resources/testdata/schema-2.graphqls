@@ -33,14 +33,14 @@ type Item {
     producer: Company
 }
 
+type Mutation {
+    createCustomer(input: CreateCustomerInput): CreateCustomerPayload!
+}
+
 type Order {
     id: ID!
     items: [Item]
     status: Status
-}
-
-enum Status {
-    NEW, CANCELED, DONE
 }
 
 type Query {
@@ -48,6 +48,6 @@ type Query {
     customers: [Customer]!
 }
 
-type Mutation {
-    createCustomer(input: CreateCustomerInput): CreateCustomerPayload!
+enum Status {
+    NEW, CANCELED, DONE
 }
