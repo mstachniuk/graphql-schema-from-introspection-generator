@@ -42,8 +42,8 @@ class Generator {
     private fun printBody(type: GraphQLType): String {
         if (type.kind == "UNION") {
             return "= ${type.possibleTypes
-                    .map { it.name }
-                    .joinToString(" | ")}\n"
+                    .sortedBy { it.name }
+                    .joinToString(" | ") { it.name }}\n"
         }
         var output = "{\n"
         type.fields.sortedBy { it.name }
@@ -61,8 +61,14 @@ class Generator {
     }
 
     private fun printEnumTypes(enumValues: List<GraphQLEnumType>): String {
-        val enumValuesText = enumValues.map { it.name }
-                .joinToString(", ")
+        if (containsDescription(enumValues)) {
+            val enums = enumValues
+                    .sortedBy { it.name }
+                    .map { "${printDescription(it)}$margin${it.name}" }
+                    .joinToString("\n")
+            return "$enums\n"
+        }
+        val enumValuesText = enumValues.joinToString(", ") { it.name }
         if (enumValuesText.isNotBlank()) {
             return "$margin$enumValuesText\n"
         } else {
@@ -76,7 +82,7 @@ class Generator {
             if (addMargin) {
                 output += "$margin";
             }
-            output += "# ${it.description}\n"
+            output += "# ${it.description.replace("\n", "\n$margin# ")}\n"
         }
         return output
     }
@@ -97,8 +103,7 @@ class Generator {
     }
 
     private fun printArguments(args: List<GraphQLField>): String {
-        val containsDescription = args.any { it.description.isNotBlank() }
-        if (containsDescription) {
+        if (containsDescription(args)) {
             val arguments = args
                     .map {
                         "${printDescription(it)}$margin${it.name}: ${printType(it.type)}"
@@ -117,6 +122,9 @@ class Generator {
         }
         return ""
     }
+
+    private fun containsDescription(args: List<Descriptable>) =
+            args.any { it.description.isNotBlank() }
 
     private fun printInterfaces(interfaces: List<GraphQLFieldType>): String {
         val interfaceList = interfaces.sortedBy { it.name }
