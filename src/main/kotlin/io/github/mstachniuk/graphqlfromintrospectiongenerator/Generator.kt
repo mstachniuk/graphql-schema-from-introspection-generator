@@ -39,8 +39,7 @@ class Generator {
             }
             it.inputFields.sortedBy { it.name }
                     .forEach {
-                output += printDescription(it)
-                output += "$margin${it.name}: ${printType(it.type)}\n"
+                output += printField(it)
             }
             output += printEnumTypes(it.enumValues)
 
@@ -85,9 +84,19 @@ class Generator {
     }
 
     private fun printArguments(args: List<GraphQLField>): String {
-        val arguments = args
-                .map { "${it.name}: ${printType(it.type)}" }
-                .joinToString(", ")
+        val containsDescription = args.filter { it.description.isNotBlank() }
+                .isNotEmpty()
+        var arguments = ""
+        if (containsDescription) {
+            arguments = args
+                    .map {
+                        "\n${printDescription(it)}$margin${it.name}: ${printType(it.type)}\n" }
+                    .joinToString(", ")
+        } else {
+            arguments = args
+                    .map { "${it.name}: ${printType(it.type)}" }
+                    .joinToString(", ")
+        }
         if (arguments.isNotBlank()) {
             return "($arguments)"
         }
