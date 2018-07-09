@@ -1,46 +1,46 @@
-type Customer {
-    # fields with ! are required
-    id: ID!
-    name: String!
-    email: String!
-    company: Company
-    orders: [Order]
-}
-
 type Company {
     id: ID!
     name: String!
     website: String!
 }
 
+input CreateCustomerInput {
+    clientMutationId: String!
+    email: String
+    name: String
+}
+
+type CreateCustomerPayload {
+    clientMutationId: String!
+    customer: Customer
+}
+
+type Customer {
+    company: Company
+    email: String!
+    # fields with ! are required
+    id: ID!
+    name: String!
+    orders: [Order]
+}
+
+type Item {
+    amount: Int
+    currency: String
+    id: ID!
+    name: String!
+    price: String
+    producer: Company
+}
+
 type Order {
     id: ID!
-    status: Status
     items: [Item]
+    status: Status
 }
 
 enum Status {
     NEW, CANCELED, DONE
-}
-
-type Item {
-    id: ID!
-    name: String!
-    amount: Int
-    price: String
-    currency: String
-    producer: Company
-}
-
-type CreateCustomerPayload {
-    customer: Customer
-    clientMutationId: String!
-}
-
-input CreateCustomerInput {
-    name: String
-    email: String
-    clientMutationId: String!
 }
 
 type Query {

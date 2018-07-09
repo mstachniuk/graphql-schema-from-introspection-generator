@@ -18,10 +18,10 @@ class Generator {
 
     private fun printTypes(response: IntrospectionResponse?): String {
         val queryTypeName = response!!.data.schema.queryType!!.name
-        val mutationTypeName = response!!.data.schema.mutationType?.name
-        val subscriptionTypeName = response!!.data.schema.subscriptionType?.name
+        val mutationTypeName = response.data.schema.mutationType?.name
+        val subscriptionTypeName = response.data.schema.subscriptionType?.name
 
-        val types = response!!.data.schema.types!!
+        val types = response.data.schema.types!!
                 .filter { !it.name.startsWith("__") }
                 .filter { it.kind != "SCALAR" }
                 .filter { it.name != queryTypeName }
@@ -33,7 +33,8 @@ class Generator {
 
         var output = ""
 
-        types.forEach {
+        types.sortedBy { it.name }
+                .forEach {
             val kind = when {
                 it.kind == "OBJECT" -> "type"
                 it.kind == "ENUM" -> "enum"
@@ -42,11 +43,13 @@ class Generator {
             }
 
             output += "$kind ${it.name} {\n"
-            it.fields.forEach {
+            it.fields.sortedBy { it.name }
+                    .forEach {
                 output += printDescription(it)
                 output += "$margin${it.name}: ${printType(it.type)}\n"
             }
-            it.inputFields.forEach {
+            it.inputFields.sortedBy { it.name }
+                    .forEach {
                 output += printDescription(it)
                 output += "$margin${it.name}: ${printType(it.type)}\n"
             }
