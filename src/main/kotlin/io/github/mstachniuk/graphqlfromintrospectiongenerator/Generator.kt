@@ -41,7 +41,7 @@ class Generator {
                 output += printDescription(it)
                 output += "$margin${it.name}: ${printType(it.type)}\n"
             }
-            output += "}\n"
+            output += "}\n\n"
         }
         return output
     }
@@ -73,10 +73,10 @@ class Generator {
         queries.forEach {
             it.fields.forEach {
                 output += printDescription(it)
-                output += "$margin${it.name}(${printArguments(it.args)}): RETURNED_TYPE\n"
+                output += "$margin${it.name}(${printArguments(it.args)}): ${printType(it.type)}\n"
             }
         }
-        output += "}"
+        output += "}\n"
         return output
     }
 
