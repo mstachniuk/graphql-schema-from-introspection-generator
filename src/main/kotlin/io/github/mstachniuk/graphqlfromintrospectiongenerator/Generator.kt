@@ -35,12 +35,12 @@ class Generator {
             output += "$kind ${it.name} {\n"
             it.fields.sortedBy { it.name }
                     .forEach {
-                output += printField(it)
-            }
+                        output += printField(it)
+                    }
             it.inputFields.sortedBy { it.name }
                     .forEach {
-                output += printField(it)
-            }
+                        output += printField(it)
+                    }
             output += printEnumTypes(it.enumValues)
 
             output += "}\n\n"
@@ -79,26 +79,29 @@ class Generator {
         return type.name
     }
 
-    private fun printField(field: GraphQLField) : String {
-         return "${printDescription(field)}$margin${field.name}${printArguments(field.args)}: ${printType(field.type)}\n"
+    private fun printField(field: GraphQLField): String {
+        val arguments = printArguments(field.args.sortedBy { it.name })
+        return "${printDescription(field)}$margin${field.name}${arguments}: ${printType(field.type)}\n"
     }
 
     private fun printArguments(args: List<GraphQLField>): String {
-        val containsDescription = args.filter { it.description.isNotBlank() }
-                .isNotEmpty()
-        var arguments = ""
+        val containsDescription = args.any { it.description.isNotBlank() }
         if (containsDescription) {
-            arguments = args
+            val arguments = args
                     .map {
-                        "\n${printDescription(it)}$margin${it.name}: ${printType(it.type)}\n" }
-                    .joinToString(", ")
+                        "${printDescription(it)}$margin${it.name}: ${printType(it.type)}"
+                    }
+                    .joinToString("\n")
+            if (arguments.isNotBlank()) {
+                return "(\n$arguments\n)"
+            }
         } else {
-            arguments = args
+            val arguments = args
                     .map { "${it.name}: ${printType(it.type)}" }
                     .joinToString(", ")
-        }
-        if (arguments.isNotBlank()) {
-            return "($arguments)"
+            if (arguments.isNotBlank()) {
+                return "($arguments)"
+            }
         }
         return ""
     }
