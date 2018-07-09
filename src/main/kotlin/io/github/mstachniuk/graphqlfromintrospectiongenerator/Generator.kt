@@ -7,10 +7,7 @@ class Generator {
     val margin = "    "
 
     fun generate(input: String): String {
-
-        val response = Klaxon().parse<IntrospectionResponse>(input)
-
-        println(response!!.data.schema)
+        val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
 
         var output = printTypes(response)
         output += printQueries(response)
@@ -31,8 +28,8 @@ class Generator {
                 .filter { it.name != mutationTypeName }
                 .filter { it.name != subscriptionTypeName }
 
-        types.forEach { println(it) }
-        println()
+//        types.forEach { println(it) }
+//        println()
 
         var output = ""
 
