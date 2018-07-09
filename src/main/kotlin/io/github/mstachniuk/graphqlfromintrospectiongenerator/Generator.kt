@@ -32,7 +32,7 @@ class Generator {
             }
 
             output += printDescription(it, false)
-            output += "$kind ${it.name} {\n"
+            output += "$kind ${it.name}${printInterfaces(it.interfaces)} {\n"
             it.fields.sortedBy { it.name }
                     .forEach {
                         output += printField(it)
@@ -102,6 +102,16 @@ class Generator {
             if (arguments.isNotBlank()) {
                 return "($arguments)"
             }
+        }
+        return ""
+    }
+
+    private fun printInterfaces(interfaces: List<GraphQLFieldType>): String {
+        val interfaceList = interfaces.sortedBy { it.name }
+                .map { it.name }
+                .joinToString(" & ")
+        if (interfaceList.isNotBlank()) {
+            return " implements $interfaceList"
         }
         return ""
     }
