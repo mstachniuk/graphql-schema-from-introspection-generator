@@ -70,7 +70,7 @@ class Generator {
     private fun printDescription(it: Descriptable): String {
         var output = ""
         if (it.description.isNotBlank()) {
-            output += "$margin#${it.description}\n"
+            output += "$margin# ${it.description}\n"
         }
         return output
     }

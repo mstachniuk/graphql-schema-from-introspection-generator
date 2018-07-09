@@ -56,7 +56,7 @@
           "fields": [
             {
               "name": "id",
-              "description": " fields with ! are required",
+              "description": "fields with ! are required",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
