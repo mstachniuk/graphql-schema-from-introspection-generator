@@ -32,14 +32,14 @@ type Item {
     producer: Company
 }
 
-input CreateCustomerInput {
-    name: String
-    email: String
+type CreateCustomerPayload {
+    customer: Customer
     clientMutationId: String!
 }
 
-type CreateCustomerPayload {
-    customer: Customer
+input CreateCustomerInput {
+    name: String
+    email: String
     clientMutationId: String!
 }
 

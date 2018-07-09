@@ -15,8 +15,8 @@ internal class GeneratorTest {
     fun `should generate schema`(args: Pair<String, String>) {
         val input = File(args.first).readText().trimIndent()
         val expected = File(args.second).readText().trimIndent()
-
         val gen = Generator()
+
         val result = gen.generate(input)
 
         assertEquals(expected, result);

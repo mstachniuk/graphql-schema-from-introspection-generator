@@ -16,14 +16,19 @@ data class SubscriptionType(val name: String)
 data class GraphQLType(val kind: String,
                        val name: String,
                        override val description: String = "",
-                       val fields: List<GrpahQLField> = listOf()) : Descriptable
+                       val fields: List<GraphQLField> = listOf(),
+                       val enumValues: List<GraphQLEnumType> = listOf(),
+                       val inputFields: List<GraphQLField> = listOf()) : Descriptable
 
-data class GrpahQLField(val name: String,
+data class GraphQLField(val name: String,
                         override val description: String = "",
-                        val args: List<GrpahQLField> = listOf(),
-                        val type: GrpahQLFieldType) : Descriptable
-data class GrpahQLFieldType(val kind: String,
+                        val args: List<GraphQLField> = listOf(),
+                        val type: GraphQLFieldType) : Descriptable
+data class GraphQLFieldType(val kind: String,
                             val name: String = "",
-                            val ofType: GrpahQLFieldType? = null)
+                            val ofType: GraphQLFieldType? = null)
+
+data class GraphQLEnumType(val name: String,
+                           override val description: String = ""): Descriptable
 
 interface Descriptable{val description: String}
