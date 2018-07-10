@@ -105,9 +105,20 @@ class Generator {
 
     private fun printDefaultValue(field: GraphQLField): String {
         if (field.defaultValue.isNotBlank()) {
+            if (containsEnumType(field.type)) {
+                return " = ${field.defaultValue.replace("\"", "")}"
+            }
             return " = ${field.defaultValue}"
         }
         return "";
+    }
+
+    private fun containsEnumType(type: GraphQLFieldType): Boolean {
+        return when {
+            type.kind == "ENUM" -> return true
+            type.ofType == null -> return false
+            else -> containsEnumType(type.ofType)
+        }
     }
 
     private fun printArguments(args: List<GraphQLField>): String {
