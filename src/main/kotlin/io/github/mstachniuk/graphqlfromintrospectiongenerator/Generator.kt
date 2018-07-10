@@ -82,7 +82,7 @@ class Generator {
             if (addMargin) {
                 output += "$margin";
             }
-            output += "# ${it.description.replace("\n", "\n$margin# ")}\n"
+            output += "# ${it.description.trim().replace("\n", "\n$margin# ")}\n"
         }
         return output
     }
