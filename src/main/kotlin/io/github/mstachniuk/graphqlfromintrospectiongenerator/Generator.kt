@@ -99,14 +99,22 @@ class Generator {
 
     private fun printField(field: GraphQLField): String {
         val arguments = printArguments(field.args.sortedBy { it.name })
-        return "${printDescription(field)}$margin${field.name}${arguments}: ${printType(field.type)}\n"
+        return "${printDescription(field)}$margin${field.name}${arguments}: ${printType(field.type)}" +
+                "${printDefaultValue(field)}\n"
+    }
+
+    private fun printDefaultValue(field: GraphQLField): String {
+        if (field.defaultValue.isNotBlank()) {
+            return " = ${field.defaultValue}"
+        }
+        return "";
     }
 
     private fun printArguments(args: List<GraphQLField>): String {
         if (containsDescription(args)) {
             val arguments = args
                     .map {
-                        "${printDescription(it)}$margin${it.name}: ${printType(it.type)}"
+                        "${printDescription(it)}$margin${it.name}: ${printType(it.type)}${printDefaultValue(it)}"
                     }
                     .joinToString("\n")
             if (arguments.isNotBlank()) {

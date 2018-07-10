@@ -25,7 +25,8 @@ data class GraphQLType(val kind: String,
 data class GraphQLField(val name: String,
                         override val description: String = "",
                         val args: List<GraphQLField> = listOf(),
-                        val type: GraphQLFieldType) : Descriptable
+                        val type: GraphQLFieldType,
+                        val defaultValue: String = "") : Descriptable
 data class GraphQLFieldType(val kind: String,
                             val name: String = "",
                             val ofType: GraphQLFieldType? = null)
