@@ -5,6 +5,7 @@ import com.beust.klaxon.Klaxon
 class Generator {
 
     val margin = "    "
+    val primitiveScalars = listOf("Boolean", "Float", "ID", "Int", "String")
 
     fun generate(input: String): String {
         val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
@@ -15,10 +16,9 @@ class Generator {
     }
 
     private fun printTypes(response: IntrospectionResponse): String {
-
         val types = response.data.schema.types!!
                 .filter { !it.name.startsWith("__") }
-                .filter { it.kind != "SCALAR" }
+                .filter { !primitiveScalars.contains(it.name)}
 
         var output = ""
 
@@ -29,11 +29,12 @@ class Generator {
                 it.kind == "INPUT_OBJECT" -> "input"
                 it.kind == "INTERFACE" -> "interface"
                 it.kind == "UNION" -> "union"
+                it.kind == "SCALAR" -> "scalar"
                 else -> "UNKNOWN_TYPE"
             }
 
             output += printDescription(it, false)
-            output += "$kind ${it.name}${printInterfaces(it.interfaces)} "
+            output += "$kind ${it.name}${printInterfaces(it.interfaces)}"
             output += printBody(it)
         }
         return output
@@ -41,11 +42,14 @@ class Generator {
 
     private fun printBody(type: GraphQLType): String {
         if (type.kind == "UNION") {
-            return "= ${type.possibleTypes
+            return " = ${type.possibleTypes
                     .sortedBy { it.name }
                     .joinToString(" | ") { it.name }}\n"
         }
-        var output = "{\n"
+        if (type.kind == "SCALAR") {
+            return "\n"
+        }
+        var output = " {\n"
         type.fields.sortedBy { it.name }
                 .forEach {
                     output += printField(it)
