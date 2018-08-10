@@ -1,28 +1,30 @@
 shipkit {
-   gitHub.repository = "mstachniuk/graphql-schema-from-introspection-generator"
+    gitHub.repository = "mstachniuk/graphql-schema-from-introspection-generator"
 
-   gitHub.readOnlyAuthToken = "e51f99bb087edf0dea813737496f634dc7a3da4c"
+    gitHub.readOnlyAuthToken = "e51f99bb087edf0dea813737496f634dc7a3da4c"
 
-   gitHub.writeAuthToken = System.getenv("GH_WRITE_TOKEN")
+    gitHub.writeAuthToken = System.getenv("GH_WRITE_TOKEN")
+
+    team.developers = ['mstachniuk:Marcin Stachniuk']
 }
 
 allprojects {
-   plugins.withId("org.shipkit.bintray") {
+    plugins.withId("org.shipkit.bintray") {
 
-       //Bintray configuration is handled by JFrog Bintray Gradle Plugin
-       //For reference see the official documentation: https://github.com/bintray/gradle-bintray-plugin
-       bintray {
+        //Bintray configuration is handled by JFrog Bintray Gradle Plugin
+        //For reference see the official documentation: https://github.com/bintray/gradle-bintray-plugin
+        bintray {
 
-           key = System.getenv("BINTRAY_API_KEY")
+            key = System.getenv("BINTRAY_API_KEY")
 
-           pkg {
-               repo = 'mstachniuk-maven-repo'
-               user = 'mstachniuk'
+            pkg {
+                repo = 'mstachniuk-maven-repo'
+                user = 'mstachniuk'
 //               userOrg = 'shipkit-bootstrap'
-               name = 'maven'
-               licenses = ['MIT']
-               labels = ['graphql', 'kotlin', 'java', 'schema']
-           }
-       }
-   }
+                name = 'maven'
+                licenses = ['MIT']
+                labels = ['graphql', 'kotlin', 'java', 'schema']
+            }
+        }
+    }
 }
