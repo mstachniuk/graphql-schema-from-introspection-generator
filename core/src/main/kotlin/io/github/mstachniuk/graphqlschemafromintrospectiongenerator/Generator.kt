@@ -1,4 +1,4 @@
-package io.github.mstachniuk.graphqlfromintrospectiongenerator
+package io.github.mstachniuk.graphqlschemafromintrospectiongenerator
 
 import com.beust.klaxon.Klaxon
 
