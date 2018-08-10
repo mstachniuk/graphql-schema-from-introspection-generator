@@ -1,6 +1,18 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.shipkit:shipkit:2.0.31"
+    }
+}
+
+apply plugin: "org.shipkit.java"
+
 allprojects {
     group = 'io.github.mstachniuk'
-    version = '0.1-SNAPSHOT'
 
     repositories {
         mavenCentral()
@@ -8,8 +20,3 @@ allprojects {
     }
 }
 
-//project(":$rootProject.name-cli") {
-//    dependencies {
-//        compile project(":$rootProject.name-core")
-//    }
-//}
