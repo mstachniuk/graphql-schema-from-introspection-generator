@@ -1,36 +1,15 @@
-buildscript {
-    ext.kotlin_version = '1.2.31'
+allprojects {
+    group = 'io.github.mstachniuk'
+    version = '0.1-SNAPSHOT'
 
     repositories {
         mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        jcenter()
     }
 }
 
-group 'io.github.mstachniuk'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'kotlin'
-
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile 'com.beust:klaxon:3.0.1'
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
-    testCompile "org.junit.jupiter:junit-jupiter-params:5.2.0"
-
-//    testCompile "org.assertj:assertj-core:3.10.0"
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
+//project(":$rootProject.name-cli") {
+//    dependencies {
+//        compile project(":$rootProject.name-core")
+//    }
+//}

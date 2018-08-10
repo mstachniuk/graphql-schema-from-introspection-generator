@@ -1,4 +1,4 @@
-package io.github.mstachniuk.graphqlfromintrospectiongenerator
+package io.github.mstachniuk.graphqlschemafromintrospectiongenerator
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.TestInstance
