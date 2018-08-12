@@ -19,13 +19,13 @@ internal class GeneratorTest {
 
         val result = gen.generate(input)
 
-        assertEquals(expected, result);
+        assertEquals(expected, result)
     }
 
-    fun sourceProvider() : Stream<Pair<String, String>> {
+    fun sourceProvider(): Stream<Pair<String, String>> {
         val path = System.getProperty("user.dir") + "/src/test/resources/testdata"
         val file = File(path)
-        val list = file.list { _ , name -> name.matches("input-(\\d*)\\.json$".toRegex()) }
+        val list = file.list { _, name -> name.matches("input-(\\d*)\\.json$".toRegex()) }
                 .map { name -> Pair("$path/$name", "$path/" + name.replace("input", "schema")
                         .replace(".json", ".graphqls")) }
         return list.stream()

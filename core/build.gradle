@@ -1,23 +1,30 @@
 buildscript {
     ext.kotlin_version = '1.2.31'
+    ext.dokka_version = '0.9.17'
 
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
     }
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'org.jetbrains.dokka'
+
+configurations {
+    ktlint
+}
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile 'com.beust:klaxon:3.0.1'
     testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
     testCompile "org.junit.jupiter:junit-jupiter-params:5.2.0"
-
-//    testCompile "org.assertj:assertj-core:3.10.0"
+    ktlint "com.github.shyiko:ktlint:0.27.0"
 }
 
 compileKotlin {
@@ -26,3 +33,23 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "src/**/*.kt"
+}
+check.dependsOn ktlint
+
+dokka {
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/docs/javadoc"
+    // suppress internal package
+    packageOptions {
+        prefix = "io.github.mstachniuk.graphqlschemafromintrospectiongenerator.internal"
+        suppress = true
+    }
+}
+
+javadoc.dependsOn dokka
