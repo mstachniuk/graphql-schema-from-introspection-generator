@@ -53,5 +53,4 @@ dokka {
         suppress = true
     }
 }
-
 javadoc.dependsOn dokka
