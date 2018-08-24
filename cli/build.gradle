@@ -6,3 +6,12 @@ dependencies {
 }
 
 bintrayUpload.enabled = false
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.github.mstachniuk.graphqlschemafromintrospectiongenerator.Main'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
