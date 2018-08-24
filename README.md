@@ -19,94 +19,97 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
 ## How get Introspection Query result?
 
 1. Run you application.
-2. Run Introspection Query.
-3. Store result in file and use Command Line tool for generating schema.
+2. Run 
+   <details>
+     <summary>Introspection Query</summary>
+     
+   ```
+       query IntrospectionQuery {
+         __schema {
+           queryType { name }
+           mutationType { name }
+           subscriptionType { name }
+           types {
+             ...FullType
+           }
+           directives {
+             name
+             description
+             locations
+             args {
+               ...InputValue
+             }
+           }
+         }
+       }
+     
+       fragment FullType on __Type {
+         kind
+         name
+         description
+         fields(includeDeprecated: true) {
+           name
+           description
+           args {
+             ...InputValue
+           }
+           type {
+             ...TypeRef
+           }
+           isDeprecated
+           deprecationReason
+         }
+         inputFields {
+           ...InputValue
+         }
+         interfaces {
+           ...TypeRef
+         }
+         enumValues(includeDeprecated: true) {
+           name
+           description
+           isDeprecated
+           deprecationReason
+         }
+         possibleTypes {
+           ...TypeRef
+         }
+       }
+     
+       fragment InputValue on __InputValue {
+         name
+         description
+         type { ...TypeRef }
+         defaultValue
+       }
+     
+       fragment TypeRef on __Type {
+         kind
+         name
+         ofType {
+           kind
+           name
+           ofType {
+             kind
+             name
+             ofType {
+               kind
+               name
+             }
+           }
+         }
+       }
+   ```
 
-*Introspection Query*:
-<details>
-  <summary>Introspection Query</summary>
-  
-```
-    query IntrospectionQuery {
-      __schema {
-        queryType { name }
-        mutationType { name }
-        subscriptionType { name }
-        types {
-          ...FullType
-        }
-        directives {
-          name
-          description
-          locations
-          args {
-            ...InputValue
-          }
-        }
-      }
-    }
-  
-    fragment FullType on __Type {
-      kind
-      name
-      description
-      fields(includeDeprecated: true) {
-        name
-        description
-        args {
-          ...InputValue
-        }
-        type {
-          ...TypeRef
-        }
-        isDeprecated
-        deprecationReason
-      }
-      inputFields {
-        ...InputValue
-      }
-      interfaces {
-        ...TypeRef
-      }
-      enumValues(includeDeprecated: true) {
-        name
-        description
-        isDeprecated
-        deprecationReason
-      }
-      possibleTypes {
-        ...TypeRef
-      }
-    }
-  
-    fragment InputValue on __InputValue {
-      name
-      description
-      type { ...TypeRef }
-      defaultValue
-    }
-  
-    fragment TypeRef on __Type {
-      kind
-      name
-      ofType {
-        kind
-        name
-        ofType {
-          kind
-          name
-          ofType {
-            kind
-            name
-          }
-        }
-      }
-    }
-```
+3. Store result in file and use Command Line tool for generating schema.
 
 This query is copied from [graphql-java](https://github.com/graphql-java/graphql-java) project.
 
 </details>
+
+## Release Notes
+
+Release notes: [docs/release-notes.md](/docs/release-notes.md)
 
 ## How to build project?
 
