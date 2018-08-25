@@ -12,8 +12,8 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
 1. Download Command Line Tool from [releases](https://github.com/mstachniuk/graphql-schema-from-introspection-generator/releases) page.
 2. Run `java -jar graphql-schema-from-introspection-generator-cli-X.X.X.jar input.json output.graphqls`
 
-   File *input.json* should contains output of GrpahQL introspection query.
-   If you don't have this file yet, you can use one from *core/src/test/resources/testdata/*   
+   File *input.json* should contains output of GrpahQL Introspection query.
+   If you don't have this file yet, you can use one from: *core/src/test/resources/testdata/*   
 3. In *output.graphqls* you will find generated GraphQL Schema.
 
 ## How get Introspection Query result?
@@ -117,7 +117,7 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
        }
    ```
    
-   This query based on Introspection Query in [graphql-java](https://github.com/graphql-java/graphql-java) and [GraphiQL](https://github.com/graphql/graphiql) project.
+   This query based on Introspection Queries in [graphql-java](https://github.com/graphql-java/graphql-java) and [GraphiQL](https://github.com/graphql/graphiql) projects.
    
    </details>
 
