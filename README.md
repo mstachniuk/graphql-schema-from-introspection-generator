@@ -95,17 +95,27 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
              ofType {
                kind
                name
+               ofType {
+                 kind
+                 name
+                 ofType {
+                   kind
+                   name
+                 }
+               }
              }
            }
          }
        }
    ```
+   
+   This query based on Introspection Query in [graphql-java](https://github.com/graphql-java/graphql-java) project.
+   
+   </details>
 
 3. Store result in file and use Command Line tool for generating schema.
 
-This query is copied from [graphql-java](https://github.com/graphql-java/graphql-java) project.
 
-</details>
 
 ## Release Notes
 
