@@ -101,6 +101,14 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
                  ofType {
                    kind
                    name
+                   ofType {
+                     kind
+                     name
+                     ofType {
+                       kind
+                       name
+                     }
+                   }
                  }
                }
              }
@@ -109,7 +117,7 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
        }
    ```
    
-   This query based on Introspection Query in [graphql-java](https://github.com/graphql-java/graphql-java) project.
+   This query based on Introspection Query in [graphql-java](https://github.com/graphql-java/graphql-java) and [GraphiQL](https://github.com/graphql/graphiql) project.
    
    </details>
 
