@@ -4,17 +4,17 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.mstachniuk/graphql-schema-from-introspection-generator-core.svg)](https://search.maven.org/artifact/io.github.mstachniuk/graphql-schema-from-introspection-generator-core)
 [![Bintray](https://api.bintray.com/packages/mstachniuk/mstachniuk-maven-repo/maven/images/download.svg) ](https://bintray.com/mstachniuk/mstachniuk-maven-repo/maven/_latestVersion)
 
-This library helps you generate GraphQL Schema based on Introspection query response. 
-It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-java) and Code First approach and want to migrate to Schema First.
+This library helps you generate [GraphQL Schema](https://graphql.org/learn/schema/) (also called (GraphQL DSL or SDL)[https://graphql-java.readthedocs.io/en/latest/schema.html]) based on Introspection Query response. 
+It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-java) and (Code First approach)[https://graphql-java.readthedocs.io/en/latest/schema.html#creating-a-schema-programmatically] and want to migrate to (Schema First approach)[https://graphql-java.readthedocs.io/en/latest/schema.html#creating-a-schema-using-the-sdl].
 
 ## How to use it?
 
 1. Download Command Line Tool from [releases](https://github.com/mstachniuk/graphql-schema-from-introspection-generator/releases) page.
 2. Run `java -jar graphql-schema-from-introspection-generator-cli-X.X.X.jar input.json output.graphqls`
 
-   File input.json should contains output of GrpahQL introspection query.
-   If you don't have yet this file you can use on from *core/src/test/resources/testdata/*   
-3. In *output.graphqls* you will find GraphQL Schema.
+   File *input.json* should contains output of GrpahQL introspection query.
+   If you don't have this file yet, you can use one from *core/src/test/resources/testdata/*   
+3. In *output.graphqls* you will find generated GraphQL Schema.
 
 ## How get Introspection Query result?
 
@@ -113,7 +113,7 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
    
    </details>
 
-3. Store result in file and use Command Line tool for generating schema.
+3. Store result in file and use Command Line tool for generating schema (See (How to use it?)[#how-to-use-it]).
 
 
 
@@ -136,4 +136,4 @@ You can use core library in your projects if you want. Just add a dependency (in
 
 ## How to contribute? 
 
-Please Send PR's via GitHub. 
+Please Send PR's, issues and feedback via GitHub. 
