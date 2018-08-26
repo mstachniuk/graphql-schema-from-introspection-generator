@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.2.31'
+    ext.junitVersion = "5.2.0"
     ext.dokka_version = '0.9.17'
 
     repositories {
@@ -24,8 +25,9 @@ configurations {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile 'com.beust:klaxon:3.0.1'
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
-    testCompile "org.junit.jupiter:junit-jupiter-params:5.2.0"
+    testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    testCompile "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     testCompile 'org.json:json:20180813'
     testCompile 'com.graphql-java:graphql-java:2018-08-23T21-16-30-141b8e4'
     testCompile 'org.skyscreamer:jsonassert:1.5.0'
@@ -37,6 +39,13 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 task ktlint(type: JavaExec, group: "verification") {

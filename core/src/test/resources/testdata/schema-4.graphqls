@@ -1,0 +1,20 @@
+type Circle {
+    latitude: Float!
+    longitude: Float!
+    radius: Int
+}
+
+type Hotel {
+    city: String!
+    name: String!
+    street: String!
+    zipcode: String!
+}
+
+type Mutation {
+    createCircle(latitude: Float!, longitude: Float!, radius: Int = 10000): Circle
+}
+
+type Query {
+    findHotel(latitude: Float!, longitude: Float!, radius: Int = 10000): [Hotel]
+}

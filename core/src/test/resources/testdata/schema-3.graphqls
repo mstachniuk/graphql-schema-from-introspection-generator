@@ -260,10 +260,7 @@ type Blame {
 
 # Represents a range of information from a Git blame.
 type BlameRange {
-    # Identifies the recency of the change, from 1 (new) to 10 (old). This is
-    # calculated as a 2-quantile and determines the length of distance between the
-    # median age of all the changes in the file and the recency of the current
-    # range's change.
+    # Identifies the recency of the change, from 1 (new) to 10 (old). This is calculated as a 2-quantile and determines the length of distance between the median age of all the changes in the file and the recency of the current range's change.
     age: Int!
     # Identifies the line author
     commit: Commit!
@@ -573,8 +570,7 @@ type Commit implements GitObject & Node & Subscribable {
 input CommitAuthor {
     # Email addresses to filter by. Commits authored by any of the specified email addresses will be returned.
     emails: [String!]
-    # ID of a User to filter by. If non-null, only commits authored by this user
-    # will be returned. This field takes precedence over emails.
+    # ID of a User to filter by. If non-null, only commits authored by this user will be returned. This field takes precedence over emails.
     id: ID
 }
 
@@ -1422,8 +1418,7 @@ interface GitSignature {
     signature: String!
     # GitHub user corresponding to the email signing this commit.
     signer: User
-    # The state of this signature. `VALID` if signature is valid and verified by
-    # GitHub, otherwise represents reason why signature is considered invalid.
+    # The state of this signature. `VALID` if signature is valid and verified by GitHub, otherwise represents reason why signature is considered invalid.
     state: GitSignatureState!
     # True if the signature was made with GitHub's signing key.
     wasSignedByGitHub: Boolean!
@@ -1481,8 +1476,7 @@ type GpgSignature implements GitSignature {
     signature: String!
     # GitHub user corresponding to the email signing this commit.
     signer: User
-    # The state of this signature. `VALID` if signature is valid and verified by
-    # GitHub, otherwise represents reason why signature is considered invalid.
+    # The state of this signature. `VALID` if signature is valid and verified by GitHub, otherwise represents reason why signature is considered invalid.
     state: GitSignatureState!
     # True if the signature was made with GitHub's signing key.
     wasSignedByGitHub: Boolean!
@@ -2180,8 +2174,7 @@ type MarketplaceListing implements Node {
     isApproved: Boolean!
     # Whether this listing has been removed from the Marketplace.
     isDelisted: Boolean!
-    # Whether this listing is still an editable draft that has not been submitted
-    # for review and is not publicly visible in the Marketplace.
+    # Whether this listing is still an editable draft that has not been submitted for review and is not publicly visible in the Marketplace.
     isDraft: Boolean!
     # Whether the product this listing represents is available as part of a paid plan.
     isPaid: Boolean!
@@ -3333,10 +3326,7 @@ type PullRequest implements Assignable & Closable & Comment & Labelable & Lockab
 ): UserConnection!
     # The permalink to the pull request.
     permalink: URI!
-    # The commit that GitHub automatically generated to test if this pull request
-    # could be merged. This field will not return a value if the pull request is
-    # merged, or if the test merge commit is still being generated. See the
-    # `mergeable` field for more details on the mergeability of the pull request.
+    # The commit that GitHub automatically generated to test if this pull request could be merged. This field will not return a value if the pull request is merged, or if the test merge commit is still being generated. See the `mergeable` field for more details on the mergeability of the pull request.
     potentialMergeCommit: Commit
     # List of project cards associated with this pull request.
     projectCards(
@@ -4732,8 +4722,7 @@ type Repository implements Node & ProjectOwner & RegistryPackageOwner & Reposito
     rebaseMergeAllowed: Boolean!
     # Fetch a given ref from the repository
     ref(
-    # The ref to retrieve. Fully qualified matches are checked in order
-    # (`refs/heads/master`) before falling back onto checks for short name matches (`master`).
+    # The ref to retrieve. Fully qualified matches are checked in order (`refs/heads/master`) before falling back onto checks for short name matches (`master`).
     qualifiedName: String!
 ): Ref
     # Fetch a list of refs from the repository
@@ -4841,8 +4830,7 @@ type Repository implements Node & ProjectOwner & RegistryPackageOwner & Reposito
 enum RepositoryAffiliation {
     # Repositories that the user has been added to as a collaborator.
     COLLABORATOR
-    # Repositories that the user has access to through being a member of an
-    # organization. This includes every repository on every team that the user is on.
+    # Repositories that the user has access to through being a member of an organization. This includes every repository on every team that the user is on.
     ORGANIZATION_MEMBER
     # Repositories that are owned by the authenticated user.
     OWNER
@@ -5332,8 +5320,7 @@ type SmimeSignature implements GitSignature {
     signature: String!
     # GitHub user corresponding to the email signing this commit.
     signer: User
-    # The state of this signature. `VALID` if signature is valid and verified by
-    # GitHub, otherwise represents reason why signature is considered invalid.
+    # The state of this signature. `VALID` if signature is valid and verified by GitHub, otherwise represents reason why signature is considered invalid.
     state: GitSignatureState!
     # True if the signature was made with GitHub's signing key.
     wasSignedByGitHub: Boolean!
@@ -5962,8 +5949,7 @@ type UnknownSignature implements GitSignature {
     signature: String!
     # GitHub user corresponding to the email signing this commit.
     signer: User
-    # The state of this signature. `VALID` if signature is valid and verified by
-    # GitHub, otherwise represents reason why signature is considered invalid.
+    # The state of this signature. `VALID` if signature is valid and verified by GitHub, otherwise represents reason why signature is considered invalid.
     state: GitSignatureState!
     # True if the signature was made with GitHub's signing key.
     wasSignedByGitHub: Boolean!
@@ -6394,8 +6380,7 @@ type User implements Actor & Node & RegistryPackageOwner & RegistryPackageSearch
     after: String
     # Returns the elements in the list that come before the specified cursor.
     before: String
-    # If non-null, include only the specified types of contributions. The
-    # GitHub.com UI uses [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]
+    # If non-null, include only the specified types of contributions. The GitHub.com UI uses [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]
     contributionTypes: [RepositoryContributionType]
     # Returns the first _n_ elements from the list.
     first: Int
