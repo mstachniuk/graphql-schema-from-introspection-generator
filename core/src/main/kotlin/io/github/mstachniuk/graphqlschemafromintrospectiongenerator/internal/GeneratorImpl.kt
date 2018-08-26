@@ -10,7 +10,7 @@ class GeneratorImpl {
     fun generate(input: String): String {
         val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
 
-        var output = printTypes(response)
+        val output = printTypes(response)
 
         return output.trimIndent().trimIndent()
     }
@@ -84,7 +84,7 @@ class GeneratorImpl {
         var output = ""
         if (it.description.isNotBlank()) {
             if (addMargin) {
-                output += "$margin"
+                output += margin
             }
             output += "# ${it.description.trim().replace("\n", "\n$margin# ")}\n"
         }
@@ -137,7 +137,7 @@ class GeneratorImpl {
             }
         } else {
             val arguments = args
-                .map { "${it.name}: ${printType(it.type)}" }
+                .map { "${it.name}: ${printType(it.type)}${printDefaultValue(it)}" }
                 .joinToString(", ")
             if (arguments.isNotBlank()) {
                 return "($arguments)"
