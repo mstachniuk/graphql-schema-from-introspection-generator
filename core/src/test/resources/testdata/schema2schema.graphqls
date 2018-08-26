@@ -1,0 +1,9 @@
+type Customer {
+    # fields with ! are required
+    id: ID!
+    name: String
+}
+
+type Query {
+    customer(id: String!): Customer!
+}
