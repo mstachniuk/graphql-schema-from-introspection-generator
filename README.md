@@ -1,6 +1,7 @@
 # GraphQL Schema from Introspection generator
 
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg) ](https://github.com/mstachniuk/graphql-schema-from-introspection-generator/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/mstachniuk/graphql-schema-from-introspection-generator.svg?branch=master)](https://travis-ci.org/mstachniuk/graphql-schema-from-introspection-generator)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.mstachniuk/graphql-schema-from-introspection-generator-core.svg)](https://search.maven.org/artifact/io.github.mstachniuk/graphql-schema-from-introspection-generator-core)
 [![Bintray](https://api.bintray.com/packages/mstachniuk/mstachniuk-maven-repo/maven/images/download.svg) ](https://bintray.com/mstachniuk/mstachniuk-maven-repo/maven/_latestVersion)
 
