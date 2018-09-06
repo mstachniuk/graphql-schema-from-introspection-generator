@@ -23,6 +23,7 @@ class SchemaToSchemaTest {
 
         // when
         val jsonString = graphql.runIntrospectionQuery()
+        // println(jsonString)
         val generatedSchema = generator.generate(jsonString)
 
         // then
