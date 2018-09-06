@@ -1,0 +1,17 @@
+schema {
+    query: QueryType
+    mutation: MutationType
+    subscription: SubscriptionType
+}
+
+type MutationType {
+    createHero(name: String): String
+}
+
+type QueryType {
+    hero(episode: String): String
+}
+
+type SubscriptionType {
+    subHero(name: String): String
+}

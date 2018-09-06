@@ -10,10 +10,37 @@ class GeneratorImpl {
     fun generate(input: String): String {
         val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
 
-        val output = printTypes(response)
+        val output = printSchema(response) + printTypes(response)
 
         return output.trimIndent().trimIndent()
     }
+
+    private fun printSchema(response: IntrospectionResponse): String {
+        if (isCustomQueryType(response) || isCustomMutationType(response) || isCustomSubscriptionType(response)
+        ) {
+            var output = "schema {\n"
+            if (isCustomQueryType(response)) {
+                output = "$output${margin}query: ${response.data.schema.queryType?.name}\n"
+            }
+            if (isCustomMutationType(response)) {
+                output = "$output${margin}mutation: ${response.data.schema.mutationType?.name}\n"
+            }
+            if (isCustomSubscriptionType(response)) {
+                output = "$output${margin}subscription: ${response.data.schema.subscriptionType?.name}\n"
+            }
+            return "$output}\n\n"
+        }
+        return ""
+    }
+
+    private fun isCustomQueryType(response: IntrospectionResponse) =
+        response.data.schema.queryType != null && response.data.schema.queryType.name != "Query"
+
+    private fun isCustomMutationType(response: IntrospectionResponse) =
+        response.data.schema.mutationType != null && response.data.schema.mutationType.name != "Mutation"
+
+    private fun isCustomSubscriptionType(response: IntrospectionResponse) =
+        response.data.schema.subscriptionType != null && response.data.schema.subscriptionType.name != "Subscription"
 
     private fun printTypes(response: IntrospectionResponse): String {
         val types = response.data.schema.types!!
