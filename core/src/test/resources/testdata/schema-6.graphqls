@@ -1,0 +1,13 @@
+# description of customer
+type Customer {
+    # unique id
+    id: ID!
+    #     lastname comment with 5 leading spaces
+    lastname: String
+    #name comment without leading space
+    name: String
+}
+
+type Query {
+    customer(id: String): Customer
+}

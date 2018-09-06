@@ -18,7 +18,7 @@ type CreateCustomerPayload {
 type Customer {
     company: Company
     email: String!
-    # fields with ! are required
+    #fields with ! are required
     id: ID!
     name: String!
     orders: [Order]

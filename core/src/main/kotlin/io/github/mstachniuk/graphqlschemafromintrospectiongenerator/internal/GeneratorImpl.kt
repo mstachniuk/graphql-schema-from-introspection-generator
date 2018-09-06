@@ -1,16 +1,20 @@
 package io.github.mstachniuk.graphqlschemafromintrospectiongenerator.internal
 
 import com.beust.klaxon.Klaxon
+import io.github.mstachniuk.graphqlschemafromintrospectiongenerator.GeneratorSettings
 
 class GeneratorImpl {
 
     val margin = "    "
     val primitiveScalars = listOf("Boolean", "Float", "ID", "Int", "String")
 
-    fun generate(input: String): String {
+    fun generate(
+        input: String,
+        settings: GeneratorSettings
+    ): String {
         val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
 
-        val output = printSchema(response) + printTypes(response)
+        val output = printSchema(response) + printTypes(response, settings)
 
         return output.trimIndent().trimIndent()
     }
@@ -42,7 +46,7 @@ class GeneratorImpl {
     private fun isCustomSubscriptionType(response: IntrospectionResponse) =
         response.data.schema.subscriptionType != null && response.data.schema.subscriptionType.name != "Subscription"
 
-    private fun printTypes(response: IntrospectionResponse): String {
+    private fun printTypes(response: IntrospectionResponse, settings: GeneratorSettings): String {
         val types = response.data.schema.types!!
             .filter { !it.name.startsWith("__") }
             .filter { !primitiveScalars.contains(it.name) }
@@ -60,14 +64,14 @@ class GeneratorImpl {
                 else -> "UNKNOWN_TYPE"
             }
 
-            output += printDescription(it, false)
+            output += printDescription(it, settings, false)
             output += "$kind ${it.name}${printInterfaces(it.interfaces)}"
-            output += printBody(it)
+            output += printBody(it, settings)
         }
         return output
     }
 
-    private fun printBody(type: GraphQLType): String {
+    private fun printBody(type: GraphQLType, settings: GeneratorSettings): String {
         if (type.kind == "UNION") {
             return " = ${type.possibleTypes
                 .sortedBy { it.name }
@@ -79,23 +83,23 @@ class GeneratorImpl {
         var output = " {\n"
         type.fields.sortedBy { it.name }
             .forEach {
-                output += printField(it)
+                output += printField(it, settings)
             }
         type.inputFields.sortedBy { it.name }
             .forEach {
-                output += printField(it)
+                output += printField(it, settings)
             }
-        output += printEnumTypes(type.enumValues)
+        output += printEnumTypes(type.enumValues, settings)
 
         output += "}\n\n"
         return output
     }
 
-    private fun printEnumTypes(enumValues: List<GraphQLEnumType>): String {
+    private fun printEnumTypes(enumValues: List<GraphQLEnumType>, settings: GeneratorSettings): String {
         if (containsDescription(enumValues)) {
             val enums = enumValues
                 .sortedBy { it.name }
-                .map { "${printDescription(it)}$margin${it.name}" }
+                .map { "${printDescription(it, settings)}$margin${it.name}" }
                 .joinToString("\n")
             return "$enums\n"
         }
@@ -107,13 +111,17 @@ class GeneratorImpl {
         }
     }
 
-    private fun printDescription(it: Descriptable, addMargin: Boolean = true): String {
+    private fun printDescription(it: Descriptable, settings: GeneratorSettings, addMargin: Boolean = true): String {
         var output = ""
         if (it.description.isNotBlank()) {
             if (addMargin) {
                 output += margin
             }
-            output += "# ${it.description.trim().replace("\n", "\n$margin# ")}\n"
+            val desc = when {
+                settings.trimStartComments -> it.description.trim() // trim start and end
+                else -> it.description.trimEnd()                    // trim only end otherwise
+            }
+            output += "#${desc.replace("\n", "\n$margin#")}\n"
         }
         return output
     }
@@ -128,9 +136,9 @@ class GeneratorImpl {
         return type.name
     }
 
-    private fun printField(field: GraphQLField): String {
-        val arguments = printArguments(field.args.sortedBy { it.name })
-        return "${printDescription(field)}$margin${field.name}$arguments: ${printType(field.type)}" +
+    private fun printField(field: GraphQLField, settings: GeneratorSettings): String {
+        val arguments = printArguments(field.args.sortedBy { it.name }, settings)
+        return "${printDescription(field, settings)}$margin${field.name}$arguments: ${printType(field.type)}" +
                 "${printDefaultValue(field)}\n"
     }
 
@@ -152,11 +160,11 @@ class GeneratorImpl {
         }
     }
 
-    private fun printArguments(args: List<GraphQLField>): String {
+    private fun printArguments(args: List<GraphQLField>, settings: GeneratorSettings): String {
         if (containsDescription(args)) {
             val arguments = args
                 .map {
-                    "${printDescription(it)}$margin${it.name}: ${printType(it.type)}${printDefaultValue(it)}"
+                    "${printDescription(it, settings)}$margin${it.name}: ${printType(it.type)}${printDefaultValue(it)}"
                 }
                 .joinToString("\n")
             if (arguments.isNotBlank()) {
