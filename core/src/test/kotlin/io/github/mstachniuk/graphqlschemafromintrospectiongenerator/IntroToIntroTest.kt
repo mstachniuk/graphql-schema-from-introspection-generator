@@ -23,8 +23,10 @@ class IntroToIntroTest {
 
         // when
         val schemaText = generator.generate(introspectionText)
+//        println(schemaText)
         val graphql = GraphQLServer.createGraphQLServer(schemaText)
         val jsonString = graphql.runIntrospectionQuery()
+//        println(jsonString)
 
         // then
         JSONAssert.assertEquals(introspectionText, jsonString, false)

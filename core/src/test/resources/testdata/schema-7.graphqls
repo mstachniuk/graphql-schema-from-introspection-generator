@@ -1,0 +1,26 @@
+#desc
+scalar Map
+
+type Query {
+    userOrGroup(id: String!): UserOrUserGroup!
+}
+
+interface SomeInterface {
+    # The unique identifier
+    id: ID
+    map: Map
+    max: Int
+    min: Int
+}
+
+type User {
+    id: ID
+    name: String
+}
+
+type UserGroup {
+    groupName: String
+    id: ID
+}
+
+union UserOrUserGroup = User | UserGroup
