@@ -121,6 +121,15 @@
               }
             },
             {
+              "name": "map",
+              "args": [],
+              "isDeprecated": false,
+              "type": {
+                "name": "Map",
+                "kind": "SCALAR"
+              }
+            },
+            {
               "name": "max",
               "args": [],
               "isDeprecated": false,
@@ -140,6 +149,11 @@
             }
           ],
           "kind": "INTERFACE"
+        },
+        {
+          "name": "Map",
+          "description": "desc",
+          "kind": "SCALAR"
         },
         {
           "name": "Int",

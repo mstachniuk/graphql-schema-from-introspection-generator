@@ -1,12 +1,14 @@
+#desc
+scalar Map
+
 type Query {
     userOrGroup(id: String!): UserOrUserGroup!
 }
 
-scalar Map
-
 interface SomeInterface {
     # The unique identifier
     id: ID
+    map: Map
     max: Int
     min: Int
 }

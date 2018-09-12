@@ -75,10 +75,10 @@ class GeneratorImpl {
         if (type.kind == "UNION") {
             return " = ${type.possibleTypes
                 .sortedBy { it.name }
-                .joinToString(" | ") { it.name }}\n"
+                .joinToString(" | ") { it.name }}\n\n"
         }
         if (type.kind == "SCALAR") {
-            return "\n"
+            return "\n\n"
         }
         var output = " {\n"
         type.fields.sortedBy { it.name }
