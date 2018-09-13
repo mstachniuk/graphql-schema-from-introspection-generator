@@ -1727,6 +1727,7 @@ type IssueComment implements Comment & Deletable & Node & Reactable & Repository
     publishedAt: DateTime
     #Returns the pull request associated with the comment, if this comment was made on a
     #pull request.
+    #
     pullRequest: PullRequest
     #A list of reactions grouped by content left on the subject.
     reactionGroups: [ReactionGroup!]
@@ -2237,24 +2238,31 @@ type MarketplaceListing implements Node {
     viewerCanEdit: Boolean!
     #Can the current viewer edit the primary and secondary category of this
     #Marketplace listing.
+    #
     viewerCanEditCategories: Boolean!
     #Can the current viewer edit the plans for this Marketplace listing.
     viewerCanEditPlans: Boolean!
     #Can the current viewer return this Marketplace listing to draft state
     #so it becomes editable again.
+    #
     viewerCanRedraft: Boolean!
     #Can the current viewer reject this Marketplace listing by returning it to
     #an editable draft state or rejecting it entirely.
+    #
     viewerCanReject: Boolean!
     #Can the current viewer request this listing be reviewed for display in
     #the Marketplace.
+    #
     viewerCanRequestApproval: Boolean!
     #Indicates whether the current user has an active subscription to this Marketplace listing.
+    #
     viewerHasPurchased: Boolean!
     #Indicates if the current user has purchased a subscription to this Marketplace listing
     #for all of the organizations the user owns.
+    #
     viewerHasPurchasedForAllOrganizations: Boolean!
     #Does the current viewer role allow them to administer this Marketplace listing.
+    #
     viewerIsListingAdmin: Boolean!
 }
 
@@ -2926,6 +2934,7 @@ type ProjectCard implements Node {
     #project column at a time. The column field will be null if the card is created
     #in a pending state and has yet to be associated with a column. Once cards are
     #associated with a column, they will not become pending in the future.
+    #
     column: ProjectColumn
     #The card content item
     content: ProjectCardItem
@@ -3881,6 +3890,7 @@ type Query {
     after: String
     #Select listings visible to the viewer even if they are not approved. If omitted or
     #false, only approved listings will be returned.
+    #
     allStates: Boolean
     #Returns the elements in the list that come before the specified cursor.
     before: String
@@ -3900,6 +3910,7 @@ type Query {
     useTopicAliases: Boolean
     #Select listings to which user has admin access. If omitted, listings visible to the
     #viewer are returned.
+    #
     viewerCanAdmin: Boolean
     #Select only listings that offer a free trial.
     withFreeTrialsOnly: Boolean = false
@@ -5865,6 +5876,7 @@ type Topic implements Node {
     name: String!
     #A list of related topics, including aliases of this topic, sorted with the most relevant
     #first.
+    #
     relatedTopics: [Topic!]!
 }
 

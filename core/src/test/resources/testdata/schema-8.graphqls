@@ -1,0 +1,10 @@
+#comment with one space at end 
+type Customer {
+    #comment with 3 spaces at end   
+    id: ID!
+    name: String
+}
+
+type Query {
+    customer(id: String!): Customer!
+}

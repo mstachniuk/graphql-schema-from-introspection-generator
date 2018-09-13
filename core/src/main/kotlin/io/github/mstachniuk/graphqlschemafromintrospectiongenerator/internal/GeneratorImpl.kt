@@ -117,10 +117,8 @@ class GeneratorImpl {
             if (addMargin) {
                 output += margin
             }
-            val desc = when {
-                settings.trimStartComments -> it.description.trim() // trim start and end
-                else -> it.description.trimEnd()                    // trim only end otherwise
-            }
+            var desc = if (settings.trimStartComments) it.description.trimStart() else it.description
+            desc = if (settings.trimEndComments) desc.trimEnd() else desc
             output += "#${desc.replace("\n", "\n$margin#")}\n"
         }
         return output
