@@ -142,7 +142,7 @@ class GraphQLServer {
         }
 
         private fun dummyScalar(name: String): GraphQLScalarType {
-            return GraphQLScalarType(name, "desc", object : Coercing<Any, Any> {
+            return GraphQLScalarType(name, null, object : Coercing<Any, Any> {
                 override fun parseValue(input: Any?): Any {
                     return ""
                 }
