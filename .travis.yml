@@ -19,3 +19,6 @@ branches:
 #Build and perform release (if needed)
 script:
   - ./gradlew build -s && ./gradlew ciPerformRelease
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
