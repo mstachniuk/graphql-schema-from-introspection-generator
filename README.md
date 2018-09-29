@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/mstachniuk/graphql-schema-from-introspection-generator.svg?branch=master)](https://travis-ci.org/mstachniuk/graphql-schema-from-introspection-generator)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.mstachniuk/graphql-schema-from-introspection-generator-core.svg)](https://search.maven.org/artifact/io.github.mstachniuk/graphql-schema-from-introspection-generator-core)
 [![Bintray](https://api.bintray.com/packages/mstachniuk/mstachniuk-maven-repo/maven/images/download.svg) ](https://bintray.com/mstachniuk/mstachniuk-maven-repo/maven/_latestVersion)
+[![codecov](https://codecov.io/gh/mstachniuk/graphql-schema-from-introspection-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/mstachniuk/graphql-schema-from-introspection-generator)
 
 This library helps you generate [GraphQL Schema](https://graphql.org/learn/schema/) (also called [GraphQL DSL or SDL](https://graphql-java.readthedocs.io/en/latest/schema.html)) based on Introspection Query response. 
 It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-java) and [Code First approach](https://graphql-java.readthedocs.io/en/latest/schema.html#creating-a-schema-programmatically) and want to migrate to [Schema First approach](https://graphql-java.readthedocs.io/en/latest/schema.html#creating-a-schema-using-the-sdl).
@@ -13,13 +14,13 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
 1. Download Command Line Tool from [releases](https://github.com/mstachniuk/graphql-schema-from-introspection-generator/releases) page.
 2. Run `java -jar graphql-schema-from-introspection-generator-cli-X.X.X.jar input.json output.graphqls`
 
-   File *input.json* should contains output of GrpahQL Introspection query.
+   File *input.json* should contain the output of GrpahQL Introspection query.
    If you don't have this file yet, you can use one from: *core/src/test/resources/testdata/*   
 3. In *output.graphqls* you will find generated GraphQL Schema.
 
 ## How get Introspection Query result?
 
-1. Run you application.
+1. Run your application.
 2. Run 
    <details>
      <summary>Introspection Query</summary>
@@ -122,7 +123,7 @@ It's useful when you use [graphql-java](https://github.com/graphql-java/graphql-
    
    </details>
 
-3. Store result in file and use Command Line tool for generating schema (See: [How to use it?](#how-to-use-it)).
+3. Store result in a file and use Command Line tool for generating the schema (See: [How to use it?](#how-to-use-it)).
 
 
 
@@ -139,10 +140,16 @@ Release notes: [docs/release-notes.md](/docs/release-notes.md)
 
 ## Another usage
 
-You can use core library in your projects if you want. Just add a dependency (in Gradle):
+You can use the core library in your projects if you want. Just add a dependency (in Gradle):
 
 `compile group: 'io.github.mstachniuk', name: 'graphql-schema-from-introspection-generator-core'`
 
 ## How to contribute? 
 
 Please Send PR's, issues and feedback via GitHub. 
+
+## Alternatives
+
+During finishing this project I found that similar tool already exists in 
+[graphql-java](https://github.com/graphql-java/graphql-java) project, see `IntrospectionResultToSchema` class.
+Unfortunately, I didn't find it before :-( 
