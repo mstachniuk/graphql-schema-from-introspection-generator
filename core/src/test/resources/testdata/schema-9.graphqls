@@ -1,0 +1,5 @@
+scalar MyMap
+
+type Query {
+    something(id: String!): MyMap
+}
