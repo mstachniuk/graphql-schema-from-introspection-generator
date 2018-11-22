@@ -9,7 +9,8 @@ data class Schema(
     val queryType: QueryType?,
     val mutationType: MutationType? = null,
     val subscriptionType: SubscriptionType? = null,
-    val types: List<GraphQLType>? = null
+    val types: List<GraphQLType>? = null,
+    val directives: List<GraphQLDirective>? = null
 )
 
 data class QueryType(val name: String)
@@ -48,3 +49,10 @@ data class GraphQLEnumType(
 interface Descriptable {
     val description: String
 }
+
+data class GraphQLDirective(
+    val name: String,
+    override val description: String = "",
+    val locations: List<String> = listOf(),
+    val args: List<GraphQLField> = listOf()
+) : Descriptable

@@ -1,0 +1,41 @@
+type Query {
+    text(id: String): String
+}
+
+directive @argumentDirective on ARGUMENT_DEFINITION
+
+directive @enumDirective on ENUM
+
+directive @enumValDirective on ENUM_VALUE
+
+# Directive comment
+directive @fieldDefinitionDirective on FIELD_DEFINITION
+
+directive @fieldDirective on FIELD
+
+directive @fragmentDirective on FRAGMENT_DEFINITION
+
+directive @fragmentSpread on FRAGMENT_SPREAD
+
+directive @inlineFragmentDirective on INLINE_FRAGMENT
+
+directive @inputFieldDefinitionDirective on INPUT_FIELD_DEFINITION
+
+directive @inputObjectDirective on INPUT_OBJECT
+
+directive @interfaceDirective on INTERFACE
+
+directive @multiDirective on ENUM_VALUE | FIELD | OBJECT | QUERY | UNION
+
+directive @mutationDirective on MUTATION
+
+directive @objectDirective(role: String!) on OBJECT
+
+directive @queryDirective on QUERY
+
+# Custom Scalar Directive
+directive @scalardirective on SCALAR
+
+directive @schemaDirective on SCHEMA
+
+directive @unionDirective on UNION
