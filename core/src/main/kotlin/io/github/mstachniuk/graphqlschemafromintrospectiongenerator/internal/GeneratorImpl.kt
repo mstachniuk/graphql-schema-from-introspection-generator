@@ -7,6 +7,7 @@ class GeneratorImpl {
 
     val margin = "    "
     val primitiveScalars = listOf("Boolean", "Float", "ID", "Int", "String")
+    val primitiveDirectives = listOf("include", "skip", "defer", "deprecated")
 
     fun generate(
         input: String,
@@ -14,9 +15,23 @@ class GeneratorImpl {
     ): String {
         val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
 
-        val output = printSchema(response) + printTypes(response, settings)
+        val output = printSchema(response) + printTypes(response, settings) + printDirectives(response, settings)
 
         return output.trimIndent().trimIndent()
+    }
+
+    private fun printDirectives(response: IntrospectionResponse, settings: GeneratorSettings): String {
+        return response.data.schema.directives!!
+                .filter { !primitiveDirectives.contains(it.name) }
+                .sortedBy { it.name }
+                .map { "${printDescription(it, settings, false)}directive @${it.name}${printArguments(it.args, settings)} on ${printDirectiveLocation(it)}" }
+                .joinToString("\n\n")
+    }
+
+    private fun printDirectiveLocation(directive: GraphQLDirective): String {
+        return directive.locations
+                .sortedBy { it }
+                .joinToString(" | ")
     }
 
     private fun printSchema(response: IntrospectionResponse): String {

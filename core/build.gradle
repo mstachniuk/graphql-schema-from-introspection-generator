@@ -30,10 +30,14 @@ dependencies {
     testCompile "org.junit.jupiter:junit-jupiter-params:$junitVersion"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     testCompile 'org.json:json:20180813'
-    testCompile 'com.graphql-java:graphql-java:2018-08-23T21-16-30-141b8e4'
+    testCompile 'com.graphql-java:graphql-java:9.0'
     testCompile 'org.skyscreamer:jsonassert:1.5.0'
     ktlint "com.github.shyiko:ktlint:0.27.0"
 }
+
+// graphql-java:
+// 8.0 directives are NOT visible in introspection query
+// 9.0 directives are visible in introspection query
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
