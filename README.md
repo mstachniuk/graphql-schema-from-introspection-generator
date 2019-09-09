@@ -152,4 +152,16 @@ Please Send PR's, issues and feedback via GitHub.
 
 During finishing this project I found that similar tool already exists in 
 [graphql-java](https://github.com/graphql-java/graphql-java) project, see `IntrospectionResultToSchema` class.
-Unfortunately, I didn't find it before :-( 
+
+Another possibility is to use [graphql-js](https://github.com/graphql/graphql-js) and this code snippet (NodeJS):
+
+```javascript
+const graphql = require("graphql");
+const schema = require("path/to/schema.json");
+
+const clientSchema = graphql.buildClientSchema(schema.data);
+const schemaString = graphql.printSchema(clientSchema);
+console.log(schemaString)
+```
+
+Unfortunately, I didn't know that before :-( 
