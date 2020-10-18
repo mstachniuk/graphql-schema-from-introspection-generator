@@ -3,7 +3,7 @@ package io.github.mstachniuk.graphqlschemafromintrospectiongenerator.internal
 import com.beust.klaxon.Klaxon
 import io.github.mstachniuk.graphqlschemafromintrospectiongenerator.GeneratorSettings
 
-class GeneratorImpl {
+internal class GeneratorImpl {
 
     val margin = "    "
     val primitiveScalars = listOf("Boolean", "Float", "ID", "Int", "String")

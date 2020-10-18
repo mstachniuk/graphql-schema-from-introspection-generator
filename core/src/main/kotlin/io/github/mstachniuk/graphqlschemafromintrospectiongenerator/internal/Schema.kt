@@ -2,10 +2,10 @@ package io.github.mstachniuk.graphqlschemafromintrospectiongenerator.internal
 
 import com.beust.klaxon.Json
 
-data class IntrospectionResponse(val data: DataNode)
-data class DataNode(@Json(name = "__schema") val schema: Schema)
+internal data class IntrospectionResponse(val data: DataNode)
+internal data class DataNode(@Json(name = "__schema") val schema: Schema)
 
-data class Schema(
+internal data class Schema(
     val queryType: QueryType?,
     val mutationType: MutationType? = null,
     val subscriptionType: SubscriptionType? = null,
@@ -13,10 +13,10 @@ data class Schema(
     val directives: List<GraphQLDirective>? = null
 )
 
-data class QueryType(val name: String)
-data class MutationType(val name: String)
-data class SubscriptionType(val name: String)
-data class GraphQLType(
+internal data class QueryType(val name: String)
+internal data class MutationType(val name: String)
+internal data class SubscriptionType(val name: String)
+internal data class GraphQLType(
     val kind: String,
     val name: String,
     override val description: String = "",
@@ -27,7 +27,7 @@ data class GraphQLType(
     val possibleTypes: List<GraphQLFieldType> = listOf()
 ) : Descriptable
 
-data class GraphQLField(
+internal data class GraphQLField(
     val name: String,
     override val description: String = "",
     val args: List<GraphQLField> = listOf(),
@@ -35,22 +35,22 @@ data class GraphQLField(
     val defaultValue: String = ""
 ) : Descriptable
 
-data class GraphQLFieldType(
+internal data class GraphQLFieldType(
     val kind: String,
     val name: String = "",
     val ofType: GraphQLFieldType? = null
 )
 
-data class GraphQLEnumType(
+internal data class GraphQLEnumType(
     val name: String,
     override val description: String = ""
 ) : Descriptable
 
-interface Descriptable {
+internal interface Descriptable {
     val description: String
 }
 
-data class GraphQLDirective(
+internal data class GraphQLDirective(
     val name: String,
     override val description: String = "",
     val locations: List<String> = listOf(),
