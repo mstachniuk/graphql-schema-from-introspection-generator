@@ -116,21 +116,21 @@ internal class GeneratorImpl {
         return output
     }
 
-    private fun printEnumTypes(enumValues: List<GraphQLEnumType>, settings: GeneratorSettings): String {
+    private fun printEnumTypes(enumValues: List<GraphQLEnumType>, settings: GeneratorSettings): String =
         if (containsDescription(enumValues)) {
             val enums = enumValues
                 .sortedBy { it.name }
                 .map { "${printDescription(it, settings)}$margin${it.name}" }
                 .joinToString("\n")
-            return "$enums\n"
-        }
-        val enumValuesText = enumValues.joinToString(", ") { it.name }
-        if (enumValuesText.isNotBlank()) {
-            return "$margin$enumValuesText\n"
+            "$enums\n"
         } else {
-            return ""
+            val enumValuesText = enumValues.joinToString(", ") { it.name }
+            if (enumValuesText.isNotBlank()) {
+                "$margin$enumValuesText\n"
+            } else {
+                ""
+            }
         }
-    }
 
     private fun printDescription(it: Descriptable, settings: GeneratorSettings, addMargin: Boolean = true): String {
         var output = ""
