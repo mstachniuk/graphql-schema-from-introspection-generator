@@ -3,7 +3,7 @@ package io.github.mstachniuk.graphqlschemafromintrospectiongenerator.internal
 import com.beust.klaxon.Klaxon
 import io.github.mstachniuk.graphqlschemafromintrospectiongenerator.GeneratorSettings
 
-class GeneratorImpl {
+internal class GeneratorImpl {
 
     val margin = "    "
     val primitiveScalars = listOf("Boolean", "Float", "ID", "Int", "String")
@@ -34,23 +34,29 @@ class GeneratorImpl {
                 .joinToString(" | ")
     }
 
-    private fun printSchema(response: IntrospectionResponse): String {
+    private fun printSchema(response: IntrospectionResponse): String =
         if (isCustomQueryType(response) || isCustomMutationType(response) || isCustomSubscriptionType(response)
         ) {
-            var output = "schema {\n"
+            "schema {\n" +
             if (isCustomQueryType(response)) {
-                output = "$output${margin}query: ${response.data.schema.queryType?.name}\n"
-            }
+                "${margin}query: ${response.data.schema.queryType?.name}\n"
+            } else {
+                ""
+            } +
             if (isCustomMutationType(response)) {
-                output = "$output${margin}mutation: ${response.data.schema.mutationType?.name}\n"
-            }
+                "${margin}mutation: ${response.data.schema.mutationType?.name}\n"
+            } else {
+                ""
+            } +
             if (isCustomSubscriptionType(response)) {
-                output = "$output${margin}subscription: ${response.data.schema.subscriptionType?.name}\n"
-            }
-            return "$output}\n\n"
+                "${margin}subscription: ${response.data.schema.subscriptionType?.name}\n"
+            } else {
+                ""
+            } +
+            "}\n\n"
+        } else {
+            ""
         }
-        return ""
-    }
 
     private fun isCustomQueryType(response: IntrospectionResponse) =
         response.data.schema.queryType != null && response.data.schema.queryType.name != "Query"
@@ -110,21 +116,21 @@ class GeneratorImpl {
         return output
     }
 
-    private fun printEnumTypes(enumValues: List<GraphQLEnumType>, settings: GeneratorSettings): String {
+    private fun printEnumTypes(enumValues: List<GraphQLEnumType>, settings: GeneratorSettings): String =
         if (containsDescription(enumValues)) {
             val enums = enumValues
                 .sortedBy { it.name }
                 .map { "${printDescription(it, settings)}$margin${it.name}" }
                 .joinToString("\n")
-            return "$enums\n"
-        }
-        val enumValuesText = enumValues.joinToString(", ") { it.name }
-        if (enumValuesText.isNotBlank()) {
-            return "$margin$enumValuesText\n"
+            "$enums\n"
         } else {
-            return ""
+            val enumValuesText = enumValues.joinToString(", ") { it.name }
+            if (enumValuesText.isNotBlank()) {
+                "$margin$enumValuesText\n"
+            } else {
+                ""
+            }
         }
-    }
 
     private fun printDescription(it: Descriptable, settings: GeneratorSettings, addMargin: Boolean = true): String {
         var output = ""
