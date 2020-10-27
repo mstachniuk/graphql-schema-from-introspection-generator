@@ -1,7 +1,7 @@
 shipkit {
     gitHub.repository = "mstachniuk/graphql-schema-from-introspection-generator"
 
-    gitHub.readOnlyAuthToken = "e51f99bb087edf0dea813737496f634dc7a3da4c"
+    gitHub.readOnlyAuthToken = System.getenv("GH_WRITE_TOKEN")
 
     gitHub.writeAuthToken = System.getenv("GH_WRITE_TOKEN")
 
