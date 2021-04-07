@@ -27,8 +27,13 @@ internal class GeneratorTest {
         val path = System.getProperty("user.dir") + "/src/test/resources/testdata"
         val file = File(path)
         val list = file.list { _, name -> name.matches("input-(\\d*)\\.json$".toRegex()) }
-                .map { name -> Pair("$path/$name", "$path/" + name.replace("input", "schema")
-                        .replace(".json", ".graphqls")) }
+            .map { name ->
+                Pair(
+                    "$path/$name",
+                    "$path/" + name.replace("input", "schema")
+                        .replace(".json", ".graphqls")
+                )
+            }
         return list.stream()
     }
 

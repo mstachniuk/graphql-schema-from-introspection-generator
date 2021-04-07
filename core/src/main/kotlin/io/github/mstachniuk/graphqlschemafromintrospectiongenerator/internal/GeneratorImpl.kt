@@ -22,38 +22,42 @@ internal class GeneratorImpl {
 
     private fun printDirectives(response: IntrospectionResponse, settings: GeneratorSettings): String {
         return response.data.schema.directives!!
-                .filter { !primitiveDirectives.contains(it.name) }
-                .sortedBy { it.name }
-                .map { "${printDescription(it, settings, false)}directive @${it.name}${printArguments(it.args, settings)} on ${printDirectiveLocation(it)}" }
-                .joinToString("\n\n")
+            .filter { !primitiveDirectives.contains(it.name) }
+            .sortedBy { it.name }
+            .map {
+                "${printDescription(it, settings, false)}directive @${it.name}" +
+                    "${printArguments(it.args, settings)} " +
+                    "on ${printDirectiveLocation(it)}"
+            }
+            .joinToString("\n\n")
     }
 
     private fun printDirectiveLocation(directive: GraphQLDirective): String {
         return directive.locations
-                .sortedBy { it }
-                .joinToString(" | ")
+            .sortedBy { it }
+            .joinToString(" | ")
     }
 
     private fun printSchema(response: IntrospectionResponse): String =
         if (isCustomQueryType(response) || isCustomMutationType(response) || isCustomSubscriptionType(response)
         ) {
             "schema {\n" +
-            if (isCustomQueryType(response)) {
-                "${margin}query: ${response.data.schema.queryType?.name}\n"
-            } else {
-                ""
-            } +
-            if (isCustomMutationType(response)) {
-                "${margin}mutation: ${response.data.schema.mutationType?.name}\n"
-            } else {
-                ""
-            } +
-            if (isCustomSubscriptionType(response)) {
-                "${margin}subscription: ${response.data.schema.subscriptionType?.name}\n"
-            } else {
-                ""
-            } +
-            "}\n\n"
+                if (isCustomQueryType(response)) {
+                    "${margin}query: ${response.data.schema.queryType?.name}\n"
+                } else {
+                    ""
+                } +
+                if (isCustomMutationType(response)) {
+                    "${margin}mutation: ${response.data.schema.mutationType?.name}\n"
+                } else {
+                    ""
+                } +
+                if (isCustomSubscriptionType(response)) {
+                    "${margin}subscription: ${response.data.schema.subscriptionType?.name}\n"
+                } else {
+                    ""
+                } +
+                "}\n\n"
         } else {
             ""
         }
@@ -94,20 +98,21 @@ internal class GeneratorImpl {
 
     private fun printBody(type: GraphQLType, settings: GeneratorSettings): String {
         if (type.kind == "UNION") {
-            return " = ${type.possibleTypes
-                .sortedBy { it.name }
-                .joinToString(" | ") { it.name }}\n\n"
+            val types = type.possibleTypes
+                ?.sortedBy { it.name }
+                ?.joinToString(" | ") { it.name!! }
+            return " = ${types}\n\n"
         }
         if (type.kind == "SCALAR") {
             return "\n\n"
         }
         var output = " {\n"
-        type.fields.sortedBy { it.name }
-            .forEach {
+        type.fields?.sortedBy { it.name }
+            ?.forEach {
                 output += printField(it, settings)
             }
-        type.inputFields.sortedBy { it.name }
-            .forEach {
+        type.inputFields?.sortedBy { it.name }
+            ?.forEach {
                 output += printField(it, settings)
             }
         output += printEnumTypes(type.enumValues, settings)
@@ -116,16 +121,16 @@ internal class GeneratorImpl {
         return output
     }
 
-    private fun printEnumTypes(enumValues: List<GraphQLEnumType>, settings: GeneratorSettings): String =
+    private fun printEnumTypes(enumValues: List<GraphQLEnumType>?, settings: GeneratorSettings): String =
         if (containsDescription(enumValues)) {
             val enums = enumValues
-                .sortedBy { it.name }
-                .map { "${printDescription(it, settings)}$margin${it.name}" }
-                .joinToString("\n")
+                ?.sortedBy { it.name }
+                ?.map { "${printDescription(it, settings)}$margin${it.name}" }
+                ?.joinToString("\n")
             "$enums\n"
         } else {
-            val enumValuesText = enumValues.joinToString(", ") { it.name }
-            if (enumValuesText.isNotBlank()) {
+            val enumValuesText = enumValues?.joinToString(", ") { it.name }
+            if (enumValuesText?.isNotBlank() == true) {
                 "$margin$enumValuesText\n"
             } else {
                 ""
@@ -152,17 +157,17 @@ internal class GeneratorImpl {
         if (type.kind == "LIST") {
             return "[${printType(type.ofType!!)}]"
         }
-        return type.name
+        return type.name ?: ""
     }
 
     private fun printField(field: GraphQLField, settings: GeneratorSettings): String {
-        val arguments = printArguments(field.args.sortedBy { it.name }, settings)
+        val arguments = printArguments(field.args?.sortedBy { it.name }, settings)
         return "${printDescription(field, settings)}$margin${field.name}$arguments: ${printType(field.type)}" +
-                "${printDefaultValue(field)}\n"
+            "${printDefaultValue(field)}\n"
     }
 
     private fun printDefaultValue(field: GraphQLField): String {
-        if (field.defaultValue.isNotBlank()) {
+        if (field.defaultValue?.isNotBlank() == true) {
             if (containsEnumType(field.type)) {
                 return " = ${field.defaultValue.replace("\"", "")}"
             }
@@ -179,35 +184,35 @@ internal class GeneratorImpl {
         }
     }
 
-    private fun printArguments(args: List<GraphQLField>, settings: GeneratorSettings): String {
+    private fun printArguments(args: List<GraphQLField>?, settings: GeneratorSettings): String {
         if (containsDescription(args)) {
             val arguments = args
-                .map {
+                ?.map {
                     "${printDescription(it, settings)}$margin${it.name}: ${printType(it.type)}${printDefaultValue(it)}"
                 }
-                .joinToString("\n")
-            if (arguments.isNotBlank()) {
+                ?.joinToString("\n")
+            if (arguments?.isNotBlank() == true) {
                 return "(\n$arguments\n)"
             }
         } else {
             val arguments = args
-                .map { "${it.name}: ${printType(it.type)}${printDefaultValue(it)}" }
-                .joinToString(", ")
-            if (arguments.isNotBlank()) {
+                ?.map { "${it.name}: ${printType(it.type)}${printDefaultValue(it)}" }
+                ?.joinToString(", ")
+            if (arguments?.isNotBlank() == true) {
                 return "($arguments)"
             }
         }
         return ""
     }
 
-    private fun containsDescription(args: List<Descriptable>) =
-        args.any { it.description.isNotBlank() }
+    private fun containsDescription(args: List<Descriptable>?) =
+        args?.any { it.description.isNotBlank() } ?: false
 
-    private fun printInterfaces(interfaces: List<GraphQLFieldType>): String {
-        val interfaceList = interfaces.sortedBy { it.name }
-            .map { it.name }
-            .joinToString(" & ")
-        if (interfaceList.isNotBlank()) {
+    private fun printInterfaces(interfaces: List<GraphQLFieldType>?): String {
+        val interfaceList = interfaces?.sortedBy { it.name }
+            ?.map { it.name }
+            ?.joinToString(" & ")
+        if (interfaceList?.isNotBlank() == true) {
             return " implements $interfaceList"
         }
         return ""
