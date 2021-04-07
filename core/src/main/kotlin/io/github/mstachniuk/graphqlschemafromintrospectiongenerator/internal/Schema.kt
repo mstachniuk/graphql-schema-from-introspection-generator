@@ -1,11 +1,12 @@
 package io.github.mstachniuk.graphqlschemafromintrospectiongenerator.internal
 
-import com.beust.klaxon.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-internal data class IntrospectionResponse(val data: DataNode)
-internal data class DataNode(@Json(name = "__schema") val schema: Schema)
+@Serializable internal data class IntrospectionResponse(val data: DataNode)
+@Serializable internal data class DataNode(@SerialName("__schema") val schema: Schema)
 
-internal data class Schema(
+@Serializable internal data class Schema(
     val queryType: QueryType?,
     val mutationType: MutationType? = null,
     val subscriptionType: SubscriptionType? = null,
@@ -13,10 +14,10 @@ internal data class Schema(
     val directives: List<GraphQLDirective>? = null
 )
 
-internal data class QueryType(val name: String)
-internal data class MutationType(val name: String)
-internal data class SubscriptionType(val name: String)
-internal data class GraphQLType(
+@Serializable internal data class QueryType(val name: String)
+@Serializable internal data class MutationType(val name: String)
+@Serializable internal data class SubscriptionType(val name: String)
+@Serializable internal data class GraphQLType(
     val kind: String,
     val name: String,
     override val description: String = "",
@@ -27,7 +28,7 @@ internal data class GraphQLType(
     val possibleTypes: List<GraphQLFieldType> = listOf()
 ) : Descriptable
 
-internal data class GraphQLField(
+@Serializable internal data class GraphQLField(
     val name: String,
     override val description: String = "",
     val args: List<GraphQLField> = listOf(),
@@ -35,13 +36,13 @@ internal data class GraphQLField(
     val defaultValue: String = ""
 ) : Descriptable
 
-internal data class GraphQLFieldType(
+@Serializable internal data class GraphQLFieldType(
     val kind: String,
     val name: String = "",
     val ofType: GraphQLFieldType? = null
 )
 
-internal data class GraphQLEnumType(
+@Serializable internal data class GraphQLEnumType(
     val name: String,
     override val description: String = ""
 ) : Descriptable
@@ -50,7 +51,7 @@ internal interface Descriptable {
     val description: String
 }
 
-internal data class GraphQLDirective(
+@Serializable internal data class GraphQLDirective(
     val name: String,
     override val description: String = "",
     val locations: List<String> = listOf(),

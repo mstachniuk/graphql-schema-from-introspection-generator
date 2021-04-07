@@ -1,7 +1,8 @@
 package io.github.mstachniuk.graphqlschemafromintrospectiongenerator.internal
 
-import com.beust.klaxon.Klaxon
 import io.github.mstachniuk.graphqlschemafromintrospectiongenerator.GeneratorSettings
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 internal class GeneratorImpl {
 
@@ -13,7 +14,11 @@ internal class GeneratorImpl {
         input: String,
         settings: GeneratorSettings
     ): String {
-        val response = Klaxon().parse<IntrospectionResponse>(input) ?: return ""
+        val format = Json {
+            ignoreUnknownKeys = true
+            coerceInputValues = true
+        }
+        val response = format.decodeFromString<IntrospectionResponse>(input)
 
         val output = printSchema(response) + printTypes(response, settings) + printDirectives(response, settings)
 
@@ -180,7 +185,7 @@ internal class GeneratorImpl {
         return when {
             type.kind == "ENUM" -> return true
             type.ofType == null -> return false
-            else -> containsEnumType(type.ofType)
+            else -> containsEnumType(type.ofType!!)
         }
     }
 
